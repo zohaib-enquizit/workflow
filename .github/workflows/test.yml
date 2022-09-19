@@ -8,18 +8,12 @@ jobs:
     outputs:
       username: ${{ steps.echo.outputs.username }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set up Node
-        uses: actions/setup-node@v2
-        with:
-          cache: "yarn"
-
       - name: echo
         id: echo
         run: echo "::set-output name=username::zohaib-enquizit"
 
   results:
+    needs: main
     uses: zohaib-enquizit/workflow/.github/workflows/echo.yml@main
     with:
       username: zohaib-enquizit
