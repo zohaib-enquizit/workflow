@@ -9,7 +9,11 @@ on:
 
 jobs:
   echo:
-    name: Print Username
+    name: Print Username (job ${{ matrix.chunk }})
+    strategy:
+      fail-fast: false
+      matrix:
+        chunk: [0, 1]
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ inputs.username }}
+      - run: echo ${{ inputs.username }} ${{ matrix.chunk }}
