@@ -1,0 +1,30 @@
+name: Unit and Integration Tests
+
+on: push
+
+jobs:
+  main:
+    runs-on: ubuntu-20.04
+    outputs:
+      username: ${{ steps.echo.outputs.username }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          cache: "yarn"
+
+      - uses: mzohaibqc/github-actions-exercise/.github/workflows/echo.yml@main
+        with:
+          username: mzohaibqc
+
+      - name: echo
+        id: echo
+        run: echo "::set-output name=username::mzohaibqc"
+
+  results:
+    runs-on: ubuntu-20.04
+    needs: main
+    steps:
+      - run: echo ${{needs.main.outputs.username}}
