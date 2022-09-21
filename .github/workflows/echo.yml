@@ -13,23 +13,28 @@ jobs:
     runs-on: ubuntu-latest
     name: Define matrix parameters
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      MATRIX: ${{ steps.set-matrix.outputs.MATRIX }}
+      LAST_INDEX: ${{ steps.set-matrix.outputs.LAST_INDEX }}
     steps:
       - name: Set Matrix
         id: set-matrix
         run: |
-          echo ::set-output name=matrix::$(echo '[]' | jq '[range(${{env.CHUNKS}})]')
+          MATRIX=$(echo '[]' | jq '[range(${{env.CHUNKS}})]')
+          LAST_INDEX=$(echo $MATRIX | js 'last')
+          echo ::set-output name=MATRIX::$(echo $MATRIX)
+          echo ::set-output name=LAST_INDEX::$(echo $LAST_INDEX)
   echo:
     needs: config
     name: Print Username (job ${{ matrix.chunk }})
     strategy:
       fail-fast: false
       matrix:
-        chunk: ${{fromJson(needs.config.outputs.matrix)}}
+        chunk: ${{fromJson(needs.config.outputs.MATRIX)}}
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ inputs.username }}
       - run: echo ${{ matrix.chunk }}
       - run: echo ${{env.CHUNKS}}
-      - run: echo ${{needs.config.outputs.matrix}} | jq 'last'
-      - run: echo ${{needs.config.outputs.matrix}} | jq 'last | type'
+      - run: echo ${{needs.config.outputs.MATRIX}}
+      - run: echo ${{needs.config.outputs.MATRIX}} | jq 'last'
+      - run: echo ${{needs.config.outputs.LAST_INDEX}}
