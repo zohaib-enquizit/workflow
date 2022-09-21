@@ -6,14 +6,26 @@ on:
       username:
         required: true
         type: string
-
+env:
+  PARALLEL: 4
 jobs:
+  config:
+    runs-on: ubuntu-latest
+    name: Define matrix parameters
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Set Matrix
+        id: set-matrix
+        run: |
+          echo ::set-output name=matrix::$(echo '[]' | jq '[range(${{env.PARALLEL}})]')
   echo:
+    needs: config
     name: Print Username (job ${{ matrix.chunk }})
     strategy:
       fail-fast: false
       matrix:
-        chunk: [0, 1]
+        chunk: ${{fromJson(needs.config.outputs.matrix)}}
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ inputs.username }} ${{ matrix.chunk }}
+      - run: echo ${{ inputs.username }}: ${{ matrix.chunk }} of ${{env.PARALLEL}}
