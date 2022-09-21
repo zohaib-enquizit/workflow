@@ -20,7 +20,7 @@ jobs:
         id: set-matrix
         run: |
           MATRIX=$(echo '[]' | jq '[range(${{env.CHUNKS}})]')
-          LAST_INDEX=$(echo $MATRIX | js 'last')
+          LAST_INDEX=$(echo $MATRIX | jq 'last')
           echo ::set-output name=MATRIX::$(echo $MATRIX)
           echo ::set-output name=LAST_INDEX::$(echo $LAST_INDEX)
   echo:
