@@ -28,4 +28,6 @@ jobs:
         chunk: ${{fromJson(needs.config.outputs.matrix)}}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ inputs.username }}: ${{ matrix.chunk }} of ${{env.PARALLEL}}"
+      - run: echo ${{ inputs.username }}
+      - run: echo ${{ matrix.chunk }}
+      - run: echo ${{env.PARALLEL}}
