@@ -31,4 +31,5 @@ jobs:
       - run: echo ${{ inputs.username }}
       - run: echo ${{ matrix.chunk }}
       - run: echo ${{env.CHUNKS}}
-      - run: echo ${{env.CHUNKS - 1}}
+      - run: echo ${{needs.config.outputs.matrix}} | jq 'last'
+      - run: echo ${{needs.config.outputs.matrix}} | jq 'last | type'
