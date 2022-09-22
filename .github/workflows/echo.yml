@@ -26,7 +26,6 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            const core = require('@actions/core')
             core.setOutput('MATRIX', Array.from({ length: process.env.CHUNKS }, (v, i) => i));
             core.setOutput('LAST_INDEX', process.env.CHUNKS - 1);
   echo:
