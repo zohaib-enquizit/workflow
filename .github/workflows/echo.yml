@@ -38,6 +38,9 @@ jobs:
       - run: echo ${{needs.config.outputs.MATRIX}}
       - run: echo ${{needs.config.outputs.MATRIX}} | jq 'last'
       - run: echo ${{needs.config.outputs.LAST_INDEX}}
+      - name: not last steps
+        if: ${{ matrix.chunk < needs.config.outputs.LAST_INDEX }}
+        run: echo 'Not Last step'
       - name: last steps
         if: ${{ matrix.chunk == needs.config.outputs.LAST_INDEX }}
         run: echo 'Last step'
