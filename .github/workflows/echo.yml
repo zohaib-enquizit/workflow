@@ -38,7 +38,6 @@ jobs:
       - run: echo ${{needs.config.outputs.MATRIX}}
       - run: echo ${{needs.config.outputs.MATRIX}} | jq 'last'
       - run: echo ${{needs.config.outputs.LAST_INDEX}}
-      - run: echo ${{ needs.config.outputs.LAST_INDEX}} | jq 'type'
-      - run: echo ${{ needs.config.outputs.LAST_INDEX == fromJSON(needs.config.outputs.LAST_INDEX) }}
-      - run: echo ${{ needs.config.outputs.LAST_INDEX == matrix.chunk }}
-      - run: echo ${{ needs.config.outputs.LAST_INDEX == fromJSON(matrix.chunk) }}
+      - name: last steps
+        if: ${{ matrix.chunk == needs.config.outputs.LAST_INDEX }}
+        run: echo 'Last step'
