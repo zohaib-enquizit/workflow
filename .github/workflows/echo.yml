@@ -16,13 +16,19 @@ jobs:
       MATRIX: ${{ steps.set-matrix.outputs.MATRIX }}
       LAST_INDEX: ${{ steps.set-matrix.outputs.LAST_INDEX }}
     steps:
-      - name: Set Matrix
-        id: set-matrix
-        run: |
-          MATRIX=$(echo '[]' | jq '[range(${{env.CHUNKS}})]')
-          LAST_INDEX=$(echo $MATRIX | jq 'last')
-          echo ::set-output name=MATRIX::$(echo $MATRIX)
-          echo ::set-output name=LAST_INDEX::$(echo $LAST_INDEX)
+      # - name: Set Matrix
+      #   id: set-matrix
+      #   run: |
+      #     MATRIX=$(echo '[]' | jq '[range(${{env.CHUNKS}})]')
+      #     LAST_INDEX=$(echo $MATRIX | jq 'last')
+      #     echo ::set-output name=MATRIX::$(echo $MATRIX)
+      #     echo ::set-output name=LAST_INDEX::$(echo $LAST_INDEX)
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            const core = require('@actions/core')
+            core.setOutput('MATRIX', Array.from({ length: process.env.CHUNKS }, (v, i) => i));
+            core.setOutput('LAST_INDEX', process.env.CHUNKS - 1);
   echo:
     needs: config
     name: Print Username (job ${{ matrix.chunk }})
