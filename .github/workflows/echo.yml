@@ -24,6 +24,7 @@ jobs:
       #     echo ::set-output name=MATRIX::$(echo $MATRIX)
       #     echo ::set-output name=LAST_INDEX::$(echo $LAST_INDEX)
       - uses: actions/github-script@v6
+        id: set-matrix
         with:
           script: |
             core.setOutput('MATRIX', JSON.stringify(Array.from({ length: 4 }, (v, i) => i)));
