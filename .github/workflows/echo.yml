@@ -39,3 +39,4 @@ jobs:
       - run: echo ${{needs.config.outputs.MATRIX}} | jq 'last'
       - run: echo ${{needs.config.outputs.LAST_INDEX}}
       - run: echo ${{ needs.config.outputs.LAST_INDEX}} | jq 'type'
+      - run: echo '10' | jq 'type'
