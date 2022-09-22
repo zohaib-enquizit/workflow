@@ -26,7 +26,7 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            core.setOutput('MATRIX', Array.from({ length: 4 }, (v, i) => i));
+            core.setOutput('MATRIX', JSON.stringify(Array.from({ length: 4 }, (v, i) => i)));
             core.setOutput('LAST_INDEX', process.env.CHUNKS - 1);
   echo:
     needs: config
@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chunk: ${{needs.config.outputs.MATRIX}}
+        chunk: ${{fromJson(needs.config.outputs.MATRIX)}}
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ inputs.username }}
