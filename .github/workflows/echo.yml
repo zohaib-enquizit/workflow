@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chunk: ${{fromJson(needs.config.outputs.MATRIX)}}
+        chunk: ${{needs.config.outputs.MATRIX}}
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ inputs.username }}
